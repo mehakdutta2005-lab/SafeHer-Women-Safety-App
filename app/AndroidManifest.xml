@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest package="com.safeher.app"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application
+        android:label="SafeHer">
+
+        <activity android:name=".MainActivity"/>
+        <activity android:name=".FakeCallActivity"/>
+        <activity android:name=".SafetyTipsActivity"/>
+        <activity android:name=".EmergencyContactsActivity"/>
+        <activity android:name=".SOSActivity"/>
+
+    </application>
+
+</manifest>
