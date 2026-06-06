@@ -1,2 +1,28 @@
-# SafeHer-Women-Safety-App
-Safety is not cage you put a girl in.its society you build where she can "spread her wings and fly" without looking over her shoulder 🪽✨
+#SafeHer – Women's Safety App
+
+SafeHer is an Android application designed to improve women's safety through emergency assistance and personal safety tools.
+
+##Features
+
+* SOS Emergency Button
+* Emergency Contacts
+* Fake Call Feature
+* Safety Tips
+
+##Technologies Used
+
+* Java
+* XML
+* Android SDK
+
+##Future Features
+
+* Live Location Sharing
+* Voice Activated SOS
+* Nearby Police Stations
+* Emergency Audio Recording
+
+##Developer
+
+Mehak Dutta
+BCA Student
