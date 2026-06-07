@@ -1,0 +1,74 @@
+package com.safeher.app; // Change this to your actual package name
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.telephony.TelephonyManager;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+public class CallReceiver extends BroadcastReceiver {
+
+    private static final String TAG = "SafeHer_CallReceiver";
+    private FirebaseFirestore db;
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        // Initialize Firestore instance
+        db = FirebaseFirestore.getInstance();
+
+        // Check if the broadcast is for a phone state change
+        if (intent.getAction().equals(TelephonyManager.ACTION_PHONE_STATE_CHANGED)) {
+            String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
+
+            if (TelephonyManager.EXTRA_STATE_RINGING.equals(state)) {
+                // Fetch the incoming phone number
+                String incomingNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
+
+                if (incomingNumber != null && !incomingNumber.isEmpty()) {
+                    Log.d(TAG, "Incoming Call Detected From: " + incomingNumber);
+                    checkIfNumberIsFraud(context, incomingNumber);
+                }
+            }
+        }
+    }
+
+    private void checkIfNumberIsFraud(Context context, String phoneNumber) {
+        // Look up the exact document matching the phone number in your 'fraud_registry' collection
+        db.collection("fraud_registry").document(phoneNumber)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                // Number is registered as a fraud number! Extract data.
+                                Long reportCount = document.getLong("report_count");
+                                String riskLevel = document.getString("risk_level");
+                                
+                                Log.w(TAG, "FRAUD DETECTED! Risk Level: " + riskLevel);
+                                
+                                // Action Trigger: For now, we show a Warning Toast.
+                                // Later, replace this with your floating XML custom window overlay trigger!
+                                Toast.makeText(context, 
+                                        "⚠️ WARNING: High Risk Fraud Call Detected (" + riskLevel + ")", 
+                                        Toast.LENGTH_LONG).show();
+                                
+                            } else {
+                                Log.d(TAG, "Number is clean or not yet reported.");
+                            }
+                        } else {
+                            Log.e(TAG, "Error checking Firestore database: ", task.getException());
+                        }
+                    }
+                });
+    }
+}
