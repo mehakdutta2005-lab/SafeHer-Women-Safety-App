@@ -59,7 +59,7 @@ public class CallReceiver extends BroadcastReceiver {
                                 // Action Trigger: For now, we show a Warning Toast.
                                 // Later, replace this with your floating XML custom window overlay trigger!
                                 Toast.makeText(context, 
-                                        "⚠️ WARNING: High Risk Fraud Call Detected (" + riskLevel + ")", 
+                                        " WARNING: High Risk Fraud Call Detected (" + riskLevel + ")", 
                                         Toast.LENGTH_LONG).show();
                                 
                             } else {
