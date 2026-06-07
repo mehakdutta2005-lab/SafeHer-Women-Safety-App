@@ -1,12 +1,10 @@
-import android.Manifest;
-import android.content.pm.PackageManager;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+#Firebase Setup
+dependencies {
+    implementation platform('com.google.firebase:firebase-bom:33.1.2')
 
-// Inside onCreate:
-if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) 
-        != PackageManager.PERMISSION_GRANTED) {
-    
-    ActivityCompat.requestPermissions(this, 
-            new String[]{Manifest.permission.READ_PHONE_STATE}, 101);
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.firebase:firebase-database'
+    implementation 'com.google.firebase:firebase-analytics'
 }
+#Add Google Services plugin
+apply plugin: 'com.google.gms.google-services'
